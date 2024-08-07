@@ -1,5 +1,8 @@
 package br.com.dnsouzadev.adopet.api.controller;
 
+import br.com.dnsouzadev.adopet.api.dto.AprovacaoAdocaoDto;
+import br.com.dnsouzadev.adopet.api.dto.ReprovacaoAdocaoDto;
+import br.com.dnsouzadev.adopet.api.dto.SolicitacaoAdocaoDto;
 import br.com.dnsouzadev.adopet.api.model.Adocao;
 import br.com.dnsouzadev.adopet.api.model.StatusAdocao;
 import br.com.dnsouzadev.adopet.api.repository.AdocaoRepository;
@@ -25,9 +28,9 @@ public class AdocaoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<String> solicitar(@RequestBody @Valid Adocao adocao) {
+    public ResponseEntity<String> solicitar(@RequestBody @Valid SolicitacaoAdocaoDto dto) {
         try {
-            adocaoService.solicitar(adocao);
+            adocaoService.solicitar(dto);
             return ResponseEntity.ok("Solicitação de adoção registrada com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -36,9 +39,9 @@ public class AdocaoController {
 
     @PutMapping("/aprovar")
     @Transactional
-    public ResponseEntity<String> aprovar(@RequestBody @Valid Adocao adocao) {
+    public ResponseEntity<String> aprovar(@RequestBody @Valid AprovacaoAdocaoDto dto) {
         try {
-            adocaoService.aprovar(adocao);
+            adocaoService.aprovar(dto);
             return ResponseEntity.ok("Adoção aprovada com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,9 +50,9 @@ public class AdocaoController {
 
     @PutMapping("/reprovar")
     @Transactional
-    public ResponseEntity<String> reprovar(@RequestBody @Valid Adocao adocao) {
+    public ResponseEntity<String> reprovar(@RequestBody @Valid ReprovacaoAdocaoDto dto) {
         try {
-            adocaoService.reprovar(adocao);
+            adocaoService.reprovar(dto);
             return ResponseEntity.ok("Adoção reprovada com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

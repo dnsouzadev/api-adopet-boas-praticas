@@ -1,5 +1,8 @@
 package br.com.dnsouzadev.adopet.api.service;
 
+import br.com.dnsouzadev.adopet.api.dto.AprovacaoAdocaoDto;
+import br.com.dnsouzadev.adopet.api.dto.ReprovacaoAdocaoDto;
+import br.com.dnsouzadev.adopet.api.dto.SolicitacaoAdocaoDto;
 import br.com.dnsouzadev.adopet.api.exception.ValidacaoException;
 import br.com.dnsouzadev.adopet.api.model.Adocao;
 import br.com.dnsouzadev.adopet.api.model.StatusAdocao;
@@ -20,7 +23,7 @@ public class AdocaoService {
     @Autowired
     private EmailService emailService;
 
-    public void solicitar(Adocao adocao) {
+    public void solicitar(SolicitacaoAdocaoDto adocao) {
         if (adocao.getPet().getAdotado()) {
             throw new ValidacaoException("Pet já foi adotado!");
         } else {
@@ -52,14 +55,14 @@ public class AdocaoService {
         emailService.enviarEmail(adocao.getPet().getAbrigo().getEmail(), "Solicitação de adoção", "Olá " +adocao.getPet().getAbrigo().getNome() +"!\n\nUma solicitação de adoção foi registrada hoje para o pet: " +adocao.getPet().getNome() +". \nFavor avaliar para aprovação ou reprovação.");
     }
 
-    public void aprovar(Adocao adocao) {
+    public void aprovar(AprovacaoAdocaoDto adocao) {
         adocao.setStatus(StatusAdocao.APROVADO);
         repository.save(adocao);
 
         emailService.enviarEmail(adocao.getPet().getAbrigo().getEmail(), "Adoção aprovada", "Olá " +adocao.getPet().getAbrigo().getNome() +"!\n\nA adoção do pet " +adocao.getPet().getNome() +", solicitada em " +adocao.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +" foi aprovada. Favor entrar em contato com o tutor " +adocao.getTutor().getNome() +" para agendar a entrega do pet.");
     }
 
-    public void reprovar(Adocao adocao) {
+    public void reprovar(ReprovacaoAdocaoDto adocao) {
         adocao.setStatus(StatusAdocao.REPROVADO);
         repository.save(adocao);
 
