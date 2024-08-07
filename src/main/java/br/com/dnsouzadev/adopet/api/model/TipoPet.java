@@ -1,4 +1,4 @@
-package br.com.alura.adopet.api.model;
+package br.com.dnsouzadev.adopet.api.model;
 
 public enum TipoPet {
     GATO,
