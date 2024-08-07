@@ -11,6 +11,7 @@ import br.com.dnsouzadev.adopet.api.model.Tutor;
 import br.com.dnsouzadev.adopet.api.repository.AdocaoRepository;
 import br.com.dnsouzadev.adopet.api.repository.PetRepository;
 import br.com.dnsouzadev.adopet.api.repository.TutorRepository;
+import br.com.dnsouzadev.adopet.api.validations.ValidationSolicitacaoAdocao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +34,14 @@ public class AdocaoService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private List<ValidationSolicitacaoAdocao> validations;
+
     public void solicitar(SolicitacaoAdocaoDto dto) {
         Pet pet = petRepository.getReferenceById(dto.idPet());
         Tutor tutor = tutorRepository.getReferenceById(dto.idTutor());
 
-
+        validations.forEach(v -> v.validar(dto));
 
         Adocao adocao = new Adocao();
         adocao.setPet(pet);
